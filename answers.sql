@@ -1,2 +1,2 @@
 -- question-1
-hello?
+select email from customers group by email order by email;
