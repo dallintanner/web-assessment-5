@@ -2,7 +2,7 @@ import { Op } from 'sequelize';
 import { Animal, Human } from './model.js';
 
 // Get the human with the primary key 2
-export const query1 = null;
+export const query1 = await Human.findbyPk(2);
 
 // Get the first animal whose species is "fish"
 export const query2 = null;
