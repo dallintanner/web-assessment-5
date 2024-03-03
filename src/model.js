@@ -9,8 +9,12 @@ export class Human extends Model {
     return this.toJSON();
   }
 
-  getFullName() {
+  async getFullName(id) {
     // TODO: Implement this method
+    const human = await Human.findByPk(id)
+    const fullName = `${human.fname} ${human.lname}`
+
+    return fullName;
   }
 }
 
@@ -23,15 +27,15 @@ Human.init(
       primaryKey: true,
     },
     fname: {
-      type: DataTypes.VARCHAR,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     lname: {
-      type: DataTypes.VARCHAR,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     email: {
-      type: DataTypes.VARCHAR,
+      type: DataTypes.STRING,
       allowNull: false,
     }
   },
@@ -56,11 +60,11 @@ Animal.init(
       primaryKey: true,
     },
     name: {
-      type: DataTypes.VARCHAR,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     species: {
-      type: DataTypes.VARCHAR,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     birthYear: {
@@ -75,7 +79,7 @@ Animal.init(
 );
 
 // TODO: Define Relationship
-Human.hasMany(Animal, {foreignKey: 'humanId'});
-Animal.belongsTo(Human, {foreignKey: 'humanId'});
+Human.hasMany(Animal, { foreignKey: 'humanId' });
+Animal.belongsTo(Human, { foreignKey: 'humanId' });
 
 export default db;
