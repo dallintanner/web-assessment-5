@@ -1,6 +1,6 @@
 import { Op } from 'sequelize';
 import { Animal, Human } from './model.js';
-
+import {log} from 'console';
 // Get the human with the primary key 2
 export const query1 = await Human.findByPk(2);
 
@@ -50,46 +50,22 @@ export const query8 = await Human.findAll({
 
 // Print a directory of humans and their animals
 export async function printHumansAndAnimals() {
-    async function getAnimals(id) {
-        const animals = await Animal.findAll({
-            where: { humanId: id }
-        })
-        return animals;
-    }
+    const owners = await Human.findAll({
+        include: {
+            model: Animal
+        }
+    });
 
-    const humanList = await Human.findAll();
+    const outputString = [];
 
-    for (let i = 0; i < humanList.length; ++i) {
-        const humansAnimals = getAnimals([i].humanId);
-        humanList.splice(i + 1, 0, humansAnimals);
-        i = i + humansAnimals.length;
-    }
-
-    const fullList = [];
-
-    for(const each of humanList){
-        if (each.fname) {
-            fullList.push(`${each.fname} ${each.lname}\n`);
-        } else if (each.name) {
-            fullList.push(`${each.name}\n`);
+    for(const owner of owners){
+        outputString.push(owner.fname)
+        for(const animal of owner.animals){
+            outputString.push(animal.name)
         }
     }
-    console.log(humanList);
-    console.log(fullList);
-    return fullList.toString();
-
-    // const stringList = humanList.reduce((accumulator, currentValue) => {
-    //     if (currentValue.fname) {
-    //         return accumulator + currentValue.fname + ' ' + currentValue.lname + '\n';
-    //     } else if (currentValue.name) {
-    //         return accumulator + currentValue.name + '\n'
-    //     }
-
-    //     //return accumulator;
-    
-    // }, '');
-
-    // return stringList;
+    log(outputString);
+    return outputString;
 }
 
 // Return a Set containing the full names of all humans

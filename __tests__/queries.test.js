@@ -88,7 +88,7 @@ describe('Testing queries.js', () => {
       'John',
       'Bubbles',
       'Fluffster',
-      // 'Jane',
+      'Jane',
       'Bugs',
       'Buster',
       'Twinkie',
